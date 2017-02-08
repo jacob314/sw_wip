@@ -3,6 +3,7 @@ library service_worker;
 import 'dart:async';
 
 import 'package:js/js.dart';
+import 'package:js/js_util.dart' as js_util;
 
 import 'src/js_async_adapter.dart';
 import 'src/js_facade/service_worker_api.dart' as js;
@@ -95,7 +96,7 @@ class ServiceWorkerGlobalScope {
 
   ///
   addEventListener<K>(String type, listener(K event), [bool useCapture]) =>
-      _delegate.addEventListener(type, allowInterop(listener), useCapture);
+      js_util.callMethod(_delegate, 'addEventListener', [type, allowInterop(listener), useCapture]);
 }
 
 // TODO
@@ -106,7 +107,7 @@ class CacheStorage {
   /// Returns a Promise that resolves to the Cache object matching
   /// the cacheName.
   Future<Cache> open(String cacheName) =>
-      promiseToFuture(_delegate.open(cacheName), (v) => new Cache._(v));
+      promiseToFuture(js_util.callMethod(_delegate, 'open', [cacheName]), (v) => new Cache._(v));
 }
 
 // TODO
@@ -117,7 +118,7 @@ class Cache {
   /// Returns a Promise that resolves to a new Cache entry whose key
   /// is the request.
   Future<Null> add(dynamic /*Request|String*/ request) {
-    return promiseToFuture(_delegate.add(request), (v)=>v);
+    return promiseToFuture(js_util.callMethod(_delegate, 'add', [request]), (v)=>v);
   }
 }
 
