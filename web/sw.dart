@@ -1,8 +1,18 @@
+@JS()
+library service_worker_test;
+
 import 'dart:async';
 
 import 'package:sw_wip/service_worker.dart';
+import 'package:js/js.dart';
 
 ServiceWorkerGlobalScope sw = new ServiceWorkerGlobalScope();
+
+@JS('self.console.dir')
+external dir(o);
+
+@JS('self.console.dir')
+external log([a,b,c,d,e,f]);
 
 main(List<String> args) {
   print('Hello from Dart SW.');
@@ -11,7 +21,7 @@ main(List<String> args) {
 
   sw.caches.open('x').then((Cache c) {
     print('cache found: $c');
-
+    dir(c);
     c.add('/').then((x) {
       print('cache done $x');
     }).catchError((e) {

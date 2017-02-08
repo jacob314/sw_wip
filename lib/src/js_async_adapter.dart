@@ -16,10 +16,10 @@ Stream<T> callbackToStream<J, T>(
   return controller.stream;
 }
 
-Future<T> promiseToFuture<T>(Promise<T> promise) {
+Future<T> promiseToFuture<T>(Promise<T> promise, wrapValue(o)) {
   Completer<T> completer = new Completer();
   promise.then(allowInterop((value) {
-    completer.complete(value);
+    completer.complete(wrapValue(value));
   }), allowInterop((error) {
     completer.completeError(error);
   }));

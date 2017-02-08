@@ -91,7 +91,7 @@ class ServiceWorkerGlobalScope {
 
   /// Allows the current service worker registration to progress from waiting
   /// to active state while service worker clients are using it.
-  Future<Null> skipWaiting() => promiseToFuture(_delegate.skipWaiting());
+  Future<Null> skipWaiting() => promiseToFuture(_delegate.skipWaiting(), (v)=>v);
 
   ///
   addEventListener<K>(String type, listener(K event), [bool useCapture]) =>
@@ -106,7 +106,7 @@ class CacheStorage {
   /// Returns a Promise that resolves to the Cache object matching
   /// the cacheName.
   Future<Cache> open(String cacheName) =>
-      promiseToFuture(_delegate.open(cacheName));
+      promiseToFuture(_delegate.open(cacheName), (v) => new Cache._(v));
 }
 
 // TODO
@@ -116,8 +116,9 @@ class Cache {
 
   /// Returns a Promise that resolves to a new Cache entry whose key
   /// is the request.
-  Future<Null> add(dynamic /*Request|String*/ request) =>
-      promiseToFuture(_delegate.add(request));
+  Future<Null> add(dynamic /*Request|String*/ request) {
+    return promiseToFuture(_delegate.add(request), (v)=>v);
+  }
 }
 
 // TODO
